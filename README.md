@@ -1,52 +1,86 @@
 
 ---
 
-# SavingsBank Smart Contract
+## SavingsBank — Solidity Smart Contract
 
-This contract implements a very simple shared private Ether vault. Users can deposit Ether into the contract, check the total contract balance, and withdraw Ether from it.
+This contract allows users to deposit Ether into the contract, while only the contract owner is allowed to withdraw funds. It includes basic validation to prevent invalid deposits and withdrawals and demonstrates ownership-based access control in Solidity.
 
-The contract does not track user-specific balances. All deposited Ether is stored in a single shared pool.
+---
+
+## Overview
+
+The contract accepts deposits by anyone through the `deposit` function and stores the funds in the contract balance. The `withdraw` function allows only the owner to withdraw a specified amount. Anyone can view the contract balance using `getBalance`.
+
+
+---
+
+## Ownership Logic
+
+Ownership is assigned when the contract is deployed.
+
+```solidity
+owner = msg.sender;
+```
+
+The account that deploys the contract becomes the owner.
+
+The `onlyOwner` modifier restricts certain functions:
+
+```solidity
+modifier onlyOwner() {
+    require(msg.sender == owner, "Only owner can use this function");
+    _;
+}
+```
+
+How it works:
+
+1. When a function marked with `onlyOwner` is called, the modifier runs first.
+2. It checks whether `msg.sender` is the owner.
+3. If the caller is not the owner, the transaction reverts.
+4. If the caller is the owner, execution continues at `_`.
+
+This ensures that only the owner can perform actions such as withdrawing funds.
 
 ---
 
 ## Functions
 
-### `deposit()`
+### `deposit() public payable`
 
-Payable function that allows anyone to send Ether to the contract.
+Allows anyone to deposit Ether into the contract.
+Requires `msg.value` to be greater than zero.
 
-* Requires `msg.value > 0`
-* The Ether sent is added to the contract’s balance
+### `getBalance() public view`
 
-```solidity
-require(msg.value > 0, "Put some value to deposit");
-```
+Returns the total Ether currently stored in the contract.
 
----
+### `withdraw(uint _amount) public onlyOwner`
 
-### `getBalance()`
+Allows only the owner to withdraw a specified amount of Ether.
 
-Returns the total Ether held by the contract.
+Validation checks include:
 
-```solidity
-return address(this).balance;
-```
+* The withdrawal amount must be greater than zero.
+* The contract must have sufficient balance.
+* The transfer must complete successfully.
 
-Returned value is in wei.
-
----
-
-### `withdraw(uint _amount)`
-
-Allows the caller to withdraw Ether from the contract balance.
-
-* `_amount` must be greater than zero
-* Contract must have enough balance
-* Sends `_amount` to `msg.sender`
+Funds are transferred to the owner using:
 
 ```solidity
-(bool success, ) = payable(msg.sender).call{value: _amount}("");
+(bool success, ) = owner.call{value: _amount}("");
 require(success, "Transfer failed.");
 ```
 
 ---
+
+## Key Points
+
+* Ownership is assigned at deployment and tied to the deploying address.
+* Only the owner can withdraw funds.
+* Anyone can deposit Ether.
+* The contract balance is publicly viewable.
+* Ether transfers include success verification.
+
+---
+
