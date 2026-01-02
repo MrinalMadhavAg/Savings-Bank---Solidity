@@ -20,4 +20,4 @@ contract SavingsBank
         (bool success, ) = payable(msg.sender).call{value: _amount}("");
         require(success, "Transfer failed.");
     }
-}
+} 
