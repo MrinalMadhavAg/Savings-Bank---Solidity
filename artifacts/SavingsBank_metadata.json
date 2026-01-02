@@ -7,6 +7,11 @@
 		"abi": [
 			{
 				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
 				"name": "deposit",
 				"outputs": [],
 				"stateMutability": "payable",
@@ -20,6 +25,19 @@
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -67,11 +85,11 @@
 	},
 	"sources": {
 		"personalSavingsBank.sol": {
-			"keccak256": "0xdd02ec14c205a5162328eb982c793c942cca54f76efb9d767b64ea707a71a941",
+			"keccak256": "0xf327e377366f82fd53f3e49676264d66f3379c364124898c4564d8c2357382ad",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://94fa824671f568d35b4246e1d273ce3534e95bf0cf4582c6809930f9439ebe90",
-				"dweb:/ipfs/QmQZVk8pbKpZdaGLZN71AsXJBJUg8YijqVY8xCW32JQjmU"
+				"bzz-raw://c7de60c8c9e44ffd04eacef1cb326e554fe632474a48f57358f223d645157057",
+				"dweb:/ipfs/QmSAsa3K39iRH3vLhD1bA5G5ZP68AjDU4cXUKMSYVfBZFH"
 			]
 		}
 	},
